@@ -200,10 +200,18 @@ class Analyzer
     {
         $hashCondition = $this->getCondition($hash);
 
+        if (is_null($hashCondition)) {
+            return false;
+        }
+
         $validQueryOp = ComparisonOperator::isValidQueryDynamoDbOperator($hashCondition['type']);
 
         if ($validQueryOp && $range) {
             $rangeCondition = $this->getCondition($range);
+
+            if (is_null($rangeCondition)) {
+                return false;
+            }
 
             $validQueryOp = ComparisonOperator::isValidQueryDynamoDbOperator(
                 $rangeCondition['type'],
